@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+  lb: 
+    image: ${PUBLIC_REGISTRY}nginx:alpine
+    container_name: digi-doc-lb
+    volumes:
+      - ./config/nginx-front.conf:/etc/nginx/nginx.conf
+      - ./config/lb.conf:/etc/nginx/conf.d/lb.conf
+      - ./config/cert.crt:/etc/nginx/pki/cert.crt
+      - ./config/cert.key:/etc/nginx/pki/cert.key
+    ports:
+      - 443:443
+    restart: always
+    networks:
+      digi-doc-network:
+        aliases:
+          - lb
+
+networks:
+  digi-doc-network:
+    name: digi-doc-network
